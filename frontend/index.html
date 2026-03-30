@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QUAN LY SAN PHAM</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f9;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      background: #007bff;
+      color: white;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      margin: 30px auto;
+      width: 400px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #eee;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>QUAN LY SAN PHAM</h1>
+
+  <div class="container">
+    <input id="name" placeholder="Ten san pham"/>
+    <input id="price" placeholder="Gia"/>
+    <br>
+    <button onclick="addProduct()">Them san pham</button>
+
+    <h3>Danh sach san pham</h3>
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    async function load() {
+      const res = await fetch("http://localhost:5000/products");
+      const data = await res.json();
+      document.getElementById("list").innerHTML =
+        data.map(p => `<li>${p.name} - ${p.price} VND</li>`).join("");
+    }
+
+    async function addProduct() {
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+
+      await fetch("http://localhost:5000/products", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ name, price })
+      });
+
+      load();
+    }
+
+    load();
+  </script>
+
+</body>
+</html>
