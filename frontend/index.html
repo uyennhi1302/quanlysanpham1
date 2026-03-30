@@ -38,16 +38,31 @@
     }
 
     button {
-      padding: 10px 20px;
-      background: #28a745;
-      color: white;
+      padding: 8px 12px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin: 2px;
     }
 
-    button:hover {
-      background: #218838;
+    .btn-add {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-view {
+      background: #17a2b8;
+      color: white;
+    }
+
+    .btn-edit {
+      background: #ffc107;
+      color: black;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
     }
 
     ul {
@@ -60,6 +75,13 @@
       margin: 5px 0;
       padding: 10px;
       border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .actions {
+      display: flex;
     }
   </style>
 </head>
@@ -69,38 +91,32 @@
   <h1>QUAN LY SAN PHAM</h1>
 
   <div class="container">
-    <input id="name" placeholder="Ten san pham"/>
-    <input id="price" placeholder="Gia"/>
+    <input placeholder="Ten san pham"/>
+    <input placeholder="Gia"/>
     <br>
-    <button onclick="addProduct()">Them san pham</button>
+    <button class="btn-add">Them san pham</button>
 
     <h3>Danh sach san pham</h3>
-    <ul id="list"></ul>
+    <ul>
+      <li>
+        Cushion - 100000 VND
+        <div class="actions">
+          <button class="btn-view">Xem</button>
+          <button class="btn-edit">Sửa</button>
+          <button class="btn-delete">Xóa</button>
+        </div>
+      </li>
+
+      <li>
+        Kem chống nắng - 200000 VND
+        <div class="actions">
+          <button class="btn-view">Xem</button>
+          <button class="btn-edit">Sửa</button>
+          <button class="btn-delete">Xóa</button>
+        </div>
+      </li>
+    </ul>
   </div>
-
-  <script>
-    async function load() {
-      const res = await fetch("http://localhost:5000/products");
-      const data = await res.json();
-      document.getElementById("list").innerHTML =
-        data.map(p => `<li>${p.name} - ${p.price} VND</li>`).join("");
-    }
-
-    async function addProduct() {
-      const name = document.getElementById("name").value;
-      const price = document.getElementById("price").value;
-
-      await fetch("http://localhost:5000/products", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ name, price })
-      });
-
-      load();
-    }
-
-    load();
-  </script>
-
+  
 </body>
 </html>
